@@ -1,0 +1,12 @@
+machine:
+  node:
+    version: 6
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - echo "$NETRC" > "$HOME/.netrc"
+      - git remote add google "https://source.developers.google.com/p/${GCLOUD_PROJECT}/r/deploy"
+      - git push google master -f
+
