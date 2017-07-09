@@ -3,9 +3,14 @@ machine:
     version: 6
 
 deployment:
-  master:
+  cloud-repository:
     branch: master
     commands:
+      - git config user.name circle
+      - git config user.email circle@example.com
+      - echo "$TWITTER_API_CREDENTIALS_JSON" > twitter-api-credentials.json
+      - git add twitter-api-credentials.json
+      - git commit -m 'Add Twitter API Credentials'
       - echo "$NETRC" > "$HOME/.netrc"
       - git remote add google "https://source.developers.google.com/p/${GCLOUD_PROJECT}/r/deploy"
       - git push google master -f
