@@ -15,10 +15,15 @@ exports.search = (req, res) => {
         id: tweet.id,
         title: tweet.text,
         date: new Date(tweet.created_at),
+        link: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id}`,
+        author: [{
+          name: tweet.user.name,
+          link: `https://twitter.com/${tweet.user.screen_name}`,
+        }],
       }));
       res.status(200).contentType('application/xml').send(feed.rss2());
     });
   } else {
-      res.status(400).end();
+    res.status(400).end();
   }
 };
