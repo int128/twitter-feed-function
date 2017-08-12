@@ -1,4 +1,4 @@
-# Twitter Feed Function
+# Twitter Feed Function [![CircleCI](https://circleci.com/gh/int128/twitter-feed-function.svg?style=shield)](https://circleci.com/gh/int128/twitter-feed-function)
 
 A Twitter Feed service on Google Cloud Functions. It provides following feed:
 
@@ -24,16 +24,16 @@ A Twitter Feed service on Google Cloud Functions. It provides following feed:
 
 ## How to deploy from Console
 
-1. Create a function at Cloud Functions.
+1. Create a function on Cloud Functions.
 1. Create `index.js` and `package.json`.
 1. Open https://your-project.cloudfunctions.net/twitter-feed-function?id=twitter-id
 
-## How to deploy via Circle CI
+## How to deploy from Circle CI
 
-1. Create a repository on Cloud Source Repositories.
-1. Configure following environment variables on Circle CI.
-  - `GCLOUD_PROJECT` - Project name.
-  - `NETRC` - Credentials for Cloud Source Repository, e.g. `machine source.developers.google.com login **** password ****`.
+1. Create a service account with Project Editor role on IAM.
+1. Create a function on Cloud Functions.
+1. Create a storage on Cloud Storage.
+1. Add environment variables on Circle CI:
+  - `GOOGLE_AUTH` - Base64 encoded string of the service account key.
+  - `GOOGLE_PROJECT_ID` - Project name.
   - `TWITTER_API_CREDENTIALS_JSON` - Credentials for Twitter API, e.g. `{"consumer_key":"****","consumer_secret":"****","access_token_key":"****","access_token_secret":"****"}`.
-1. Configure relationship between GitHub and Circle CI.
-1. Configure relationship between Cloud Source Repository and Cloud Function.
