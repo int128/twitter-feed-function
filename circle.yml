@@ -1,17 +1,13 @@
-machine:
-  node:
-    version: 6
-
-deployment:
-  cloud-repository:
-    branch: master
-    commands:
-      - git config user.name circle
-      - git config user.email circle@example.com
-      - echo "$TWITTER_API_CREDENTIALS_JSON" > twitter-api-credentials.json
-      - git add twitter-api-credentials.json
-      - git commit -m 'Add Twitter API Credentials'
-      - echo "$NETRC" > "$HOME/.netrc"
-      - git remote add google "https://source.developers.google.com/p/${GCLOUD_PROJECT}/r/deploy"
-      - git push google master -f
-
+version: 2
+jobs:
+  build:
+    docker:
+      - image: google/cloud-sdk
+    working_directory: ~/twitter-feed-function
+    steps:
+      - checkout
+      - run: echo "$TWITTER_API_CREDENTIALS_JSON" > twitter-api-credentials.json
+      - run: echo "$GOOGLE_AUTH" | base64 -i --decode > "$HOME/gcp-key.json"
+      - run: gcloud auth activate-service-account --key-file "$HOME/gcp-key.json"
+      - run: gcloud --quiet config set project "$GOOGLE_PROJECT_ID"
+      - run: gcloud beta functions deploy search --stage-bucket "$GOOGLE_PROJECT_ID" --trigger-http
